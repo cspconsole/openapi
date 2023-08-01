@@ -48,14 +48,12 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "search results matching criteria",
+            "description" : "configuration code for HTTP header",
             "content" : {
-              "application/json" : {
+              "application/text" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/InventoryItem"
-                  }
+                  "type" : "string",
+                  "example" : "add_header Content-Security-Policy-Report-Only default-src 'self'\nadd_header Report-To"
                 }
               }
             }
@@ -96,10 +94,8 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/InventoryItem"
-                  }
+                  "type" : "string",
+                  "example" : "asfsadf"
                 }
               }
             }
@@ -135,12 +131,10 @@
           "200" : {
             "description" : "search results matching criteria",
             "content" : {
-              "application/json" : {
+              "application/text" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/InventoryItem"
-                  }
+                  "type" : "string",
+                  "example" : "afasdfsda"
                 }
               }
             }
@@ -160,18 +154,30 @@
         "summary" : "stores CSP violation report",
         "description" : "By passing in the appropriate options, you can implement CSP into your application\n",
         "operationId" : "cspReport",
-        "parameters" : [ {
-          "name" : "format",
-          "in" : "query",
-          "description" : "pass a mandatory output string for looking up inventory",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "nginx", "apache", "json", "plain" ]
+        "requestBody" : {
+          "description" : "Optional description in *Markdown*",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CspReport"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "configuration code for HTTP header",
+            "content" : {
+              "application/text" : {
+                "schema" : {
+                  "type" : "string",
+                  "example" : "add_header Content-Security-Policy-Report-Only default-src 'self'\nadd_header Report-To"
+                }
+              }
+            }
           }
-        } ],
+        },
         "security" : [ {
           "ApiKeyAuth" : [ ]
         } ]
@@ -180,45 +186,35 @@
   },
   "components" : {
     "schemas" : {
-      "HeaderItem" : {
-        "required" : [ "id", "manufacturer", "name", "releaseDate" ],
+      "CspReport" : {
+        "required" : [ "csp-report" ],
         "type" : "object",
         "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid",
-            "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
-          },
-          "name" : {
-            "type" : "string",
-            "example" : "Widget Adapter"
-          },
-          "releaseDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "example" : "2016-08-29T09:12:33.001Z"
-          },
-          "manufacturer" : {
-            "$ref" : "#/components/schemas/Manufacturer"
+          "csp-report" : {
+            "$ref" : "#/components/schemas/CspReportItem"
           }
         }
       },
-      "Output" : {
-        "required" : [ "name" ],
+      "CspReportItem" : {
+        "required" : [ "blocked-uri", "document-uri", "original-policy" ],
         "type" : "object",
         "properties" : {
-          "name" : {
+          "document-uri" : {
             "type" : "string",
-            "example" : "ACME Corporation"
+            "example" : "https://www.example.com/path"
           },
-          "homePage" : {
+          "blocked-uri" : {
             "type" : "string",
-            "format" : "url",
+            "format" : "string",
             "example" : "https://www.acme-corp.com"
           },
-          "phone" : {
+          "effective-directive" : {
             "type" : "string",
-            "example" : "408-867-5309"
+            "example" : "font-src"
+          },
+          "original-policy" : {
+            "type" : "string",
+            "example" : "default-src 'self'"
           }
         }
       }
