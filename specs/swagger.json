@@ -13,8 +13,8 @@
     "version" : "1.0.0"
   },
   "servers" : [ {
-    "url" : "https://virtserver.swaggerhub.com/cspconsole/public-api/1.0.0",
-    "description" : "SwaggerHub API Auto Mocking"
+    "url" : "https://{PROJECT_SLUG}.api.cspconsole.com",
+    "description" : "Project API endpoint"
   } ],
   "paths" : {
     "/v1/csp/header" : {
@@ -49,8 +49,14 @@
           },
           "400" : {
             "description" : "bad input parameter"
+          },
+          "401" : {
+            "description" : "invalid api-key"
           }
-        }
+        },
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ]
       }
     },
     "/v1/csp/configuration" : {
@@ -86,7 +92,10 @@
           "400" : {
             "description" : "bad input parameter"
           }
-        }
+        },
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ]
       }
     },
     "/v1/csp/hash" : {
@@ -122,7 +131,10 @@
           "400" : {
             "description" : "bad input parameter"
           }
-        }
+        },
+        "security" : [ {
+          "ApiKeyAuth" : [ ]
+        } ]
       }
     }
   },
@@ -169,6 +181,13 @@
             "example" : "408-867-5309"
           }
         }
+      }
+    },
+    "securitySchemes" : {
+      "ApiKeyAuth" : {
+        "type" : "apiKey",
+        "name" : "Authorization",
+        "in" : "header"
       }
     }
   }
