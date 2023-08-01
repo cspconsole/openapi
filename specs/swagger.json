@@ -1,0 +1,175 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "CI/CD Integration API",
+    "description" : "CSP integration API allows you to automate management of Content-Security-Policy headers within your application",
+    "contact" : {
+      "email" : "developers@cspconsole.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/cspconsole/public-api/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "paths" : {
+    "/v1/csp/header" : {
+      "get" : {
+        "summary" : "returns respective configuration header",
+        "description" : "By passing in the appropriate options, you can implement CSP into your application\n",
+        "operationId" : "cspHeader",
+        "parameters" : [ {
+          "name" : "output",
+          "in" : "query",
+          "description" : "pass a mandatory output string for looking up inventory",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    },
+    "/v1/csp/configuration" : {
+      "get" : {
+        "summary" : "returns respective configuration data",
+        "description" : "By passing in the appropriate options, you can search for\navailable inventory in the system\n",
+        "operationId" : "cspConfiguration",
+        "parameters" : [ {
+          "name" : "output",
+          "in" : "query",
+          "description" : "pass an optional search string for looking up inventory",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    },
+    "/v1/csp/hash" : {
+      "get" : {
+        "summary" : "returns a hash of your existing configuration",
+        "description" : "By passing in the appropriate options, you can search for\navailable inventory in the system\n",
+        "operationId" : "cspHash",
+        "parameters" : [ {
+          "name" : "output",
+          "in" : "query",
+          "description" : "pass an optional search string for looking up inventory",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "InventoryItem" : {
+        "required" : [ "id", "manufacturer", "name", "releaseDate" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid",
+            "example" : "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Widget Adapter"
+          },
+          "releaseDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2016-08-29T09:12:33.001Z"
+          },
+          "manufacturer" : {
+            "$ref" : "#/components/schemas/Manufacturer"
+          }
+        }
+      },
+      "Manufacturer" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "ACME Corporation"
+          },
+          "homePage" : {
+            "type" : "string",
+            "format" : "url",
+            "example" : "https://www.acme-corp.com"
+          },
+          "phone" : {
+            "type" : "string",
+            "example" : "408-867-5309"
+          }
+        }
+      }
+    }
+  }
+}
