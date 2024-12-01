@@ -148,7 +148,7 @@
         } ]
       }
     },
-    "/v1/csp/report" : {
+    "/v1/reports" : {
       "post" : {
         "tags" : [ "Report" ],
         "summary" : "stores CSP violation report",
